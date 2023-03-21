@@ -1,0 +1,6 @@
+#!/bin/bash
+###############################################
+echo Create Debian VM
+###############################################
+
+ansible-playbook /root/ansible-XCP-ng/Debian-deploy.yaml -i /root/ansible-XCP-ng/xenservers.ini
