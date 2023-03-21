@@ -1,0 +1,104 @@
+#cloud-config
+users:
+#Create user Serveradmin
+   - name: serveradmin
+     lock_passwd: False
+     passwd: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     gecos: serveradmin
+     groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video]
+     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+     shell: /bin/bash
+     ssh_authorized_keys:
+      - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+   - name: root
+     lock-passwd: True
+
+
+#Disable root user
+disable_root: True
+
+#Set hostname
+preserve_hostname: false
+hostname: localhost
+manage_resolv_conf: true
+manage_etc_hosts: true
+preserve_hostname: false
+
+cloud_init_modules:
+ - migrator
+ - seed_random
+ - bootcmd
+ - write-files
+ - growpart
+ - resizefs
+ - disk_setup
+ - mounts
+ - set_hostname
+ - update_hostname
+ - update_etc_hosts
+ - ca-certs
+ - rsyslog
+ - users-groups
+ - ssh
+
+cloud_config_modules:
+#Set timezone
+ – timezone "Africa/Johannesburg"
+ - emit_upstart
+ - ssh-import-id
+ - locale
+ - set-passwords
+ - grub-dpkg
+ - apt-pipelining
+ - apt-configure
+ - ntp
+ - disable-ec2-metadata
+ - runcmd
+ - byobu
+
+
+cloud_final_modules:
+ - package-update-upgrade-install
+ - fan
+ - salt-minion
+ - mcollective
+ - rightscale_userdata
+ - scripts-vendor
+ - scripts-per-once
+ - scripts-per-boot
+ - scripts-per-instance
+ - scripts-user
+ - ssh-authkey-fingerprints
+ - keys-to-console
+ - phone-home
+ - final-message
+ - power-state-change
+
+#Install packages
+package_update: true
+package_upgrade: true
+packages:
+ - curl
+ - sudo
+ - unattended-upgrades
+ - open-iscsi
+ - nfs-common
+ - cifs-utils
+ - htop
+ - net-tools
+ - nftables
+ - fail2ban
+ - unzip
+ - rsyslog
+
+#Set date of server creation
+bootcmd:
+ - date > /etc/birth_certificate
+
+datasource_list: [ NoCloud, ConfigDrive ]
+datasource:
+    ConfigDrive:
+        dsmode: local
+    NoCloud:
+        fs_label: cidata

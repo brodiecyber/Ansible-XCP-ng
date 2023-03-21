@@ -1,0 +1,1 @@
+rm -r /etc/network/interfaces.d/50-cloud-init.cfg

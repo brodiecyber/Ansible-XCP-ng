@@ -1,0 +1,27 @@
+#delete user created by the install
+userdel -r serveradmin
+
+#install cloud-init
+apt-get install -y cloud-init cloud-utils cloud-initramfs-growroot
+
+#delete for network cloud-init
+Debain you have to remove the default config as well under /etc/network/interfaces
+
+#edit the following
+nano /etc/resolv.conf #remove all
+nano /etc/hosts # remove everything but localhost
+
+#add at the bottom
+datasource_list: [ NoCloud, ConfigDrive ]
+datasource:
+    ConfigDrive:
+        dsmode: local
+    NoCloud:
+        fs_label: cidata
+
+
+remove random cloud-init files
+rm -rf /etc/cloud/cloud.cfg.d/99-installer.cfg /etc/cloud/cloud.cfg.d/90_dpkg.cfg /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
+
+
+make hashed password for the cloud-init user
