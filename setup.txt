@@ -11,6 +11,13 @@ Debain you have to remove the default config as well under /etc/network/interfac
 nano /etc/resolv.conf #remove all
 nano /etc/hosts # remove everything but localhost
 
+#edit the cloud.cfg templete to suite your config needs
+nano /etc/cloud/cloud.cfg
+
+#make hashed password for the cloud-init user
+sudo apt install whois
+mkpasswd -m sha-512
+
 #add at the bottom
 datasource_list: [ NoCloud, ConfigDrive ]
 datasource:
@@ -19,9 +26,21 @@ datasource:
     NoCloud:
         fs_label: cidata
 
+#add the following files to diable network and configure Nocloud
+nano 99-disable-network-config.cfg
+#past
+network: {config: disabled}
 
-remove random cloud-init files
+nano 99-fake_cloud.cfg
+#past
+datasource_list: [ NoCloud, None ]
+datasource:
+  NoCloud:
+    fs_label: system-boot
+    
+#Now run cloud-init init
+sudo cloud-init init
+
+#remove random cloud-init files
 rm -rf /etc/cloud/cloud.cfg.d/99-installer.cfg /etc/cloud/cloud.cfg.d/90_dpkg.cfg /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
 
-
-make hashed password for the cloud-init user
