@@ -1,0 +1,7 @@
+#install XenAPI so ansible can communicate with the XenServer.
+
+#install python
+dnf install pip
+
+#install XenAPI
+pip install XenAPI
