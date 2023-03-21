@@ -1,0 +1,52 @@
+- name: Create a Debian VM from a Cloudinit-template
+
+#Tells the system to use installed XenAPI
+  connection: local
+  hosts: localhost
+
+#Set Variables
+  vars_files:
+    - /root/ansible-XCP-ng/xenserver-vars.yaml
+
+#Set Tasks
+  tasks:
+    - set_fact:
+
+#VM Random Name
+        VMname: "debian-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=5') }}"
+
+#Set ansible plugin
+    - community.general.xenserver_guest:
+
+#Variables specifyed in vars.yaml
+       hostname: "{{ xenserver_hostname }}"
+       username: "{{ xenserver_username }}"
+       password: "{{ xenserver_password }}"
+
+#Set to false for when server has no cert
+       validate_certs: false
+
+#VM name generated at random
+       name: "{{ VMname }}"
+
+#Set power state of the VM 
+#       state: poweredon
+
+#Set Templet to use
+       template: Debian-CloudImage
+
+#Set disk Size and SR location
+       disks:
+       - size_gb: 25
+#         sr: my_sr
+
+#Set Hardware requiermants for VM
+       hardware:
+         num_cpus: 1
+         num_cpu_cores_per_socket: 1
+         memory_mb: 1024
+
+#Set what CDrom to mount
+ #      cdrom:
+ #        type: iso
+ #        iso_name: guest-tools.iso
