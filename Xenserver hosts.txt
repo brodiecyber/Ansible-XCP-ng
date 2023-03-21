@@ -1,2 +1,0 @@
-[Xenserver]
-XCP-ng-Master ansible_host=10.0.X.X
