@@ -1,0 +1,4 @@
+#XenServer cridentials
+   xenserver_hostname: "10.0.X.X"
+   xenserver_username: "root"
+   xenserver_password: "XXXXXXXXX"
